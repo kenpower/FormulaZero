@@ -10,6 +10,7 @@
 //#include "Player.h"   // include Player header file
 
 #include "Car.h"
+#include "SFMLSpriteRenderer.h"
 
 class Game
 {
@@ -23,7 +24,7 @@ class Game
 	sf::Texture cars;
 
 	Car car;
-	SpriteRenderer carRenderer;
+	SFMLSpriteRenderer carRenderer;
 
 
 public:	  // declaration of member functions	

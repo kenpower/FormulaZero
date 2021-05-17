@@ -142,13 +142,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="FormulaZero.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Car.h" />
-    <ClInclude Include="Collideable.h" />
+    <ClInclude Include="Collidable.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="SFMLSpriteRenderer.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="Window.h" />

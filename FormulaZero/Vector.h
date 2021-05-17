@@ -34,5 +34,13 @@ public:
 		return *this;
 	}
 
+	const Vector& operator-(const Vector& rhs) {
+		return Vector(x-rhs.x, y -rhs.y);
+	}
+
+	double length() {
+		return sqrt(x * x + y * y);
+	}
+
 };
 
