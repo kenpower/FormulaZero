@@ -34,12 +34,29 @@ public:
 		return *this;
 	}
 
+	const Vector operator+(const Vector& rhs) const {
+		return Vector(x + rhs.x, y + rhs.y);
+	}
+
 	const Vector operator-(const Vector& rhs) const{
 		return Vector(x-rhs.x, y -rhs.y);
 	}
 
-	double length() {
-		return sqrt(x * x + y * y);
+	double length() const {
+		return sqrt(lengthSq());
+	}
+
+	double lengthSq() const {
+		return x * x + y * y;
+	}
+
+	double operator*(const Vector& rhs) const {
+		return x * rhs.x + y * rhs.y;
+	}
+
+	const Vector norm() const {
+		double len = length();
+		return Vector(x/len, y /len);
 	}
 
 };

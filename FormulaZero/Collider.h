@@ -132,11 +132,21 @@ public:
 	
 	LineCollider(Vector start, Vector end) :start(start), end(end) {}
 
-	double distanceTo(const Vector& p) const {
-		double dx = end.x - start.x;
-		double dy = end.x - start.x;
+	Vector closestPointTo(const Vector& point) const {
+		Vector p = Vector(point - start);
 
-		return abs(dx * (start.y - p.y) - (start.x - p.x) * dy) / sqrt(dx * dx + dy * dy);
+		Vector line = Vector(end - start);
+		Vector edge = line.norm();
+
+		Vector closestPoint = start + (edge * (p * edge));
+		double t = (p * edge) / line.lengthSq();
+
+		if (0 < t && t < 1) return closestPoint;
+
+		return t <= 0 ? start : end;
+
 	}
+
+
 
 };

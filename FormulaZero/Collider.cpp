@@ -34,10 +34,11 @@ bool CollisionChecker::areColliding(const CircleCollider& circle1, const CircleC
 };
 
 bool CollisionChecker::areColliding(const CircleCollider& circle, const LineCollider& line){
-	if (circle.contains(line.start) || circle.contains(line.end))
+	Vector closest = line.closestPointTo(circle.pos);
+
+	if (Vector(circle.pos - closest).length() < circle.radius)
 		return true;
-	if (line.distanceTo(circle.pos) < circle.radius)
-		return true;
+
 
 	return false;
 };
