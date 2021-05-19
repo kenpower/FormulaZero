@@ -16,6 +16,7 @@ class Car : public Drawable, Collidable
 	const double MAX_TURN_RATE = 1.5;
 
 public:
+	Car() :collider(Vector(0, 0), 0) {};
 	const Vector& getPosition() { return pos; }
 	const double getRotation() { return direction; }
 	void accelerate(double _accleration) { acceleration += _accleration; }
@@ -39,7 +40,7 @@ public:
 		return collider;
 	}
 
-	void collide(Vector& normal) {
+	void collided(Vector& normal) {
 
 	}
 };

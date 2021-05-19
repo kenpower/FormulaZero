@@ -34,7 +34,7 @@ public:
 		return *this;
 	}
 
-	const Vector& operator-(const Vector& rhs) {
+	const Vector operator-(const Vector& rhs) const{
 		return Vector(x-rhs.x, y -rhs.y);
 	}
 
