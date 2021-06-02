@@ -6,8 +6,8 @@
 class SFMLSpriteRenderer :
     public SpriteRenderer
 {
-	Drawable* drawable;
-	sf::RenderWindow* window;
+	Drawable* drawable{NULL};
+	sf::RenderWindow* window{NULL};
 
 	sf::Sprite sprite;
 
@@ -24,7 +24,7 @@ public:
 	void draw() {
 		Vector pos = drawable->getPosition();
 
-		sprite.setPosition(pos.x, pos.y);
+		sprite.setPosition((float)pos.x, (float)pos.y);
 		sprite.setRotation(drawable->getRotation());
 		window->draw(sprite);
 	}

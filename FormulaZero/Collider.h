@@ -1,28 +1,17 @@
 #pragma once
+#include <stdexcept>
 #include "Vector.h"
-
-class AABBCollider;
-class CircleCollider;
-class LineCollider;
-
-class CollisionChecker {
-public:
-	static bool areColliding(const AABBCollider&, const AABBCollider&);
-	static bool areColliding(const AABBCollider&, const CircleCollider&);
-	static bool areColliding(const AABBCollider&, const LineCollider&);
-	static bool areColliding(const CircleCollider&, const CircleCollider&);
-	static bool areColliding(const CircleCollider&, const LineCollider&);
-	static bool areColliding(const LineCollider&, const LineCollider&);
-
-};
-
+#include "Collision.h"
+#include "CollisionChecker.h"
 
 class Collider {
 public:
-	virtual bool isCollidingWithAABB(AABBCollider&) = 0;
-	virtual bool isCollidingWithCircle(CircleCollider&) = 0;
-	virtual bool isCollidingWithLine(LineCollider&) = 0;
-	virtual bool isCollidingWith(Collider&) = 0;
+	virtual Collision isCollidingWithAABB(const AABBCollider&) const = 0;
+	virtual Collision isCollidingWithCircle(const CircleCollider&) const = 0;
+	virtual Collision isCollidingWithLine(const LineCollider&) const = 0;
+	virtual Collision isCollidingWith(const Collider&) const = 0;
+	virtual const Vector normal(const Vector&) const = 0;
+	virtual const string toString() const = 0;
 
 };
 
@@ -32,18 +21,18 @@ class AABBCollider : public Collider {
 public:
 	friend class CollisionChecker;
 
-	bool isCollidingWithAABB(AABBCollider& other) {
+	Collision isCollidingWithAABB(const AABBCollider& other) const{
 		return CollisionChecker::areColliding(*this, other);
 	}
 
-	bool isCollidingWithCircle(CircleCollider& circle) {
+	Collision isCollidingWithCircle(const CircleCollider& circle) const{
 		return CollisionChecker::areColliding(*this, circle);
 	}
-	bool isCollidingWithLine(LineCollider& line) {
+	Collision isCollidingWithLine(const LineCollider& line) const{
 		return CollisionChecker::areColliding(*this, line);
 	};
 
-	bool isCollidingWith(Collider& collider) {
+	Collision isCollidingWith(const Collider& collider) const{
 		return collider.isCollidingWithAABB(*this);
 	}
 
@@ -52,6 +41,14 @@ public:
 	bool contains(const Vector& pt) const{
 		return pt.x > left && pt.x < right&& pt.y > bottom && pt.y < top;
 	}
+
+	const Vector normal(const Vector&) const {
+		throw std::logic_error("Not Implmented!");
+	}
+
+	const string toString() const{
+		return string("[ l:" + to_string(left) + ", r:" + to_string(right) + ", b:" + to_string(bottom) + " , t:" + to_string(top) + "]");
+	};
 
 	typedef int OutCode;
 	const OutCode INSIDE = 0; // 0000
@@ -85,18 +82,18 @@ private:
 public:
 	friend class CollisionChecker;
 
-	bool isCollidingWithAABB(AABBCollider& aabbCollider) {
+	Collision isCollidingWithAABB(const AABBCollider& aabbCollider)  const {
 		return CollisionChecker::areColliding(aabbCollider, *this);
 	}
-	bool isCollidingWithCircle(CircleCollider& other) {
+	Collision isCollidingWithCircle(const CircleCollider& other)  const {
 		return CollisionChecker::areColliding(other, *this);
 	}
 
-	bool isCollidingWithLine(LineCollider& line) {
+	Collision isCollidingWithLine(const LineCollider& line)  const {
 		return CollisionChecker::areColliding(*this, line);
 	}
 
-	bool isCollidingWith(Collider& collider) {
+	Collision isCollidingWith(const Collider& collider)  const {
 		return collider.isCollidingWithCircle(*this);
 	}
 
@@ -107,6 +104,14 @@ public:
 		return d.length() < radius;
 	}
 
+	const Vector normal(const Vector&) const {
+		throw std::logic_error("Not Implmented");
+	}
+
+	const string toString() const{
+		return string("[ p:" + pos.toString() + ", r:" + to_string(radius) +"]");
+	};
+
 };
 
 class LineCollider : public Collider {
@@ -116,21 +121,28 @@ private:
 public:
 	friend class CollisionChecker;
 	
-	bool isCollidingWithAABB(AABBCollider& other) {
+	Collision isCollidingWithAABB(const AABBCollider& other)  const {
 		return CollisionChecker::areColliding(other, *this);
 	}
-	bool isCollidingWithCircle(CircleCollider& other) {
+	Collision isCollidingWithCircle(const CircleCollider& other)  const {
 		return CollisionChecker::areColliding(other, *this);
 	}
-	bool isCollidingWithLine(LineCollider& other) {
+	Collision isCollidingWithLine(const LineCollider& other) const{
 		return CollisionChecker::areColliding(other, *this);
 	}
 
-	bool isCollidingWith(Collider& collider) {
+	Collision isCollidingWith(const Collider& collider)  const {
 		return collider.isCollidingWithLine(*this);
 	}
 	
+	LineCollider(){}
+
 	LineCollider(Vector start, Vector end) :start(start), end(end) {}
+
+	void init(Vector& _start, Vector& _end) {
+		start = _start;
+		end = _end;
+	}
 
 	Vector closestPointTo(const Vector& point) const {
 		Vector p = Vector(point - start);
@@ -147,6 +159,12 @@ public:
 
 	}
 
+	const Vector normal(const Vector& _ = Vector()) const {
+		return (end - start).perp().norm();
+	}
 
+	const string toString() const{
+		return string("[ s:" + start.toString() + ", e:" + end.toString() + "]");
+	};
 
 };

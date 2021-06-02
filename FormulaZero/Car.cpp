@@ -2,9 +2,6 @@
 
 void Car::update(double millisecondsSinceLastUpdate)
 {
-	Vector dir(1, 0);
-	dir.rotate(direction);
-
 	const double AIR_DRAG = 0.98;
 	const double STEERING_RESTORE = 0.99;
 
@@ -16,8 +13,9 @@ void Car::update(double millisecondsSinceLastUpdate)
 
 	turnRate *= STEERING_RESTORE;
 
-	pos += dir * distance;
-	direction += distance * turnRate;
+	pos += direction * distance;
+
+	direction.rotate(distance * turnRate);
 
 	acceleration = 0;
 }

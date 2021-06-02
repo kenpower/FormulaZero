@@ -1,11 +1,16 @@
 #pragma once
 #include <cmath>
+#include <string>
 using namespace std;
+
+const double PI{ 3.141592653589793238463 };
 
 class Vector
 {
 public:
-	Vector(int x, int y) :x((double)x), y((double)y) {}
+	Vector():x(0), y(0) {}
+	Vector(int x, int y) :x((double)x), y((double)y) {}	
+	Vector(unsigned x, unsigned int y) :x((double)x), y((double)y) {}
 	Vector(double x, double y) :x(x), y(y) {}
 	Vector(const Vector& v) :x(v.x), y(v.y) {}
 
@@ -14,7 +19,7 @@ public:
 	const Vector& rotate(double degrees) {
 		Vector v(x, y);
 
-		double radians = degrees * 3.14159 / 180;
+		double radians = degrees * PI / 180;
 
 		double _x = cos(radians) * x - sin(radians) * y;
 		double _y = sin(radians) * x + cos(radians) * y;
@@ -59,5 +64,37 @@ public:
 		return Vector(x/len, y /len);
 	}
 
+	const std::string toString() const {
+		return string("(" + to_string(x) + ", " + to_string(y) + " )");
+	}
+
+	Vector perp() const{
+		return Vector(-y, x);
+	}
+
+	Vector reflect(const Vector& _n) const {
+		Vector n = _n.norm();
+		Vector d = *this;
+
+		return d - n * 2 * (d * n);
+	}
+
+
+	double angle() const {
+		double quadrantAdjustment{ 0 };
+		if (x < 0) quadrantAdjustment = PI;
+		if (x > 0 && y<0) quadrantAdjustment = 2*PI;
+
+		return ((atan(y / x) + quadrantAdjustment )/ ( 2 * PI)) * 360;
+	}
+
+	static const Vector fromPolar(double angle, double radius) {
+
+		double angleRads = (angle / 360) * 2 * PI;
+		return Vector(radius * cos(angleRads), radius * sin(angleRads));
+	}
+
+
 };
+
 

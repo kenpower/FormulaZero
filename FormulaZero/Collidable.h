@@ -3,7 +3,7 @@
 class Collidable
 {
 public:
-	virtual Collider& getCollider() = 0;
-	virtual void collided(Vector&) = 0;
+	virtual const Collider& getCollider() = 0;
+	virtual void collided(const Collision&) = 0;
 };
 

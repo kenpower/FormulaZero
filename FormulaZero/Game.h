@@ -10,6 +10,8 @@
 //#include "Player.h"   // include Player header file
 
 #include "Car.h"
+#include "Collider.h"
+#include "Collision.h"
 #include "SFMLSpriteRenderer.h"
 
 class Game
@@ -25,6 +27,8 @@ class Game
 
 	Car car;
 	SFMLSpriteRenderer carRenderer;
+
+	LineCollider boundaries[4];
 
 
 public:	  // declaration of member functions	

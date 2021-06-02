@@ -143,12 +143,15 @@
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CollisionChecker.cpp" />
     <ClCompile Include="FormulaZero.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Car.h" />
     <ClInclude Include="Collidable.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionChecker.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="SFMLSpriteRenderer.h" />

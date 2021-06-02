@@ -82,7 +82,19 @@ TEST(Car, DISABLED_Turn) { //TODO: find a way of testing this
 	EXPECT_NEAR(1.0 + ROOT_2, car.getPosition().x, EPSILON);
 	EXPECT_NEAR(2.0 + ROOT_2, car.getPosition().y, EPSILON);
 
+}
 
+TEST(Car, CollisionResponse) {
+	Car car;
+	LineCollider lc(Vector(-10,0), Vector(10, 0));
 
+	Collision collision = car.getCollider().isCollidingWith(lc);
 
+	EXPECT_TRUE(collision.is);
+
+	car.collided(collision);
+
+	EXPECT_FALSE(car.getCollider().isCollidingWith(lc).is);
+
+	
 }

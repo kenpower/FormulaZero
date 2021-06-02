@@ -20,11 +20,26 @@ Game::Game()
 
 void Game::loadContent()
 {
-	//2508, 2837, 29, 743
 	sf::IntRect rect(29, 2508, 743 - 28, 2837 - 2508);
 	cars.loadFromFile("assets\\cars.png", rect);
+
 	carRenderer.init(&car, window.getWindow(), cars, 0.1f);
 	car.init(&carRenderer);
+
+	auto size = window.getWindow()->getSize();
+	Vector upperLeft(0, 0);
+	Vector upperRight(size.x, 0u);
+	Vector lowerLeft(0u, size.y);
+	Vector lowerRight(size.x, size.y);
+
+	boundaries[0].init(upperLeft, upperRight);
+	boundaries[1].init(upperRight, lowerRight);
+	boundaries[2].init(lowerRight, lowerLeft);
+	boundaries[3].init(lowerLeft, upperLeft);
+
+
+
+
 }
 
 
@@ -55,7 +70,7 @@ void Game::run()
 		{
 			timeOfPreviousFrame = now;
 			
-			update(nanosecondsSinceLastUpdate / 1000);
+			update((long)nanosecondsSinceLastUpdate / 1000);
 			draw();
 
 		}
@@ -95,8 +110,16 @@ void Game::update(long ms)
 
 
 	// update any game variables here ...
+	std::cout << "angle:" << car.getRotation() << '\n';
+	//std::cout << "wall collider" << c.toString() << '\n';
 
 	car.update(ms);
+	for (auto& c : boundaries) {
+		Collision col = c.isCollidingWith(car.getCollider());
+		if (col.is) {
+			car.collided(col);
+		}
+	}
 
 }
 
