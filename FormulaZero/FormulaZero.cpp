@@ -1,28 +1,18 @@
-
-
 #include "Game.h"   // include Game header file
-
 
 int main()
 {
 
 	Game theGame;
 	theGame.loadContent();
+	theGame.setUp();
 	theGame.run();
 
 	return 0;
 }
 
-Game::Game()
-// Default constructor
-{
-}
 
-void Game::loadContent()
-{
-	sf::IntRect rect(29, 2508, 743 - 28, 2837 - 2508);
-	cars.loadFromFile("assets\\cars.png", rect);
-
+void Game::setUp() {
 	carRenderer.init(&car, window.getWindow(), cars, 0.1f);
 	car.init(&carRenderer);
 
@@ -36,21 +26,20 @@ void Game::loadContent()
 	boundaries[1].init(upperRight, lowerRight);
 	boundaries[2].init(lowerRight, lowerLeft);
 	boundaries[3].init(lowerLeft, upperLeft);
+}
 
-
-
+void Game::loadContent()
+{
+	sf::IntRect rect(29, 2508, 743 - 28, 2837 - 2508);
+	cars.loadFromFile("assets\\cars.png", rect);
 
 }
 
 
 void Game::run()
-// This function contains the main game loop which controls the game. 
 {
 	int i = 0;
 	auto timeOfPreviousFrame = std::chrono::high_resolution_clock::now();
-
-	//auto end = std::chrono::high_resolution_clock::now();
-	//std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(end - timeOfPreviousFrame).count() << "ns" << std::endl;
 
 	double nanosecondsPerFrame = 1000000000.0f / 60.0f;
 	while (true)//window.isOpen())
@@ -63,20 +52,19 @@ void Game::run()
 		//		window.close();
 		//}
 
-		auto now = std::chrono::high_resolution_clock::now();
-		auto nanosecondsSinceLastUpdate = std::chrono::duration_cast<std::chrono::nanoseconds>(now - timeOfPreviousFrame).count();
+		auto timeNow = std::chrono::high_resolution_clock::now();
+		long nanosecondsSinceLastUpdate = std::chrono::duration_cast<std::chrono::nanoseconds>(timeNow - timeOfPreviousFrame).count();
 
 		if (nanosecondsSinceLastUpdate > nanosecondsPerFrame)
 		{
-			timeOfPreviousFrame = now;
+			timeOfPreviousFrame = timeNow;
 			
-			update((long)nanosecondsSinceLastUpdate / 1000);
+			update(nanosecondsSinceLastUpdate / 1000);
 			draw();
 
 		}
 
-	}  // end while loop
-
+	}  
 }
 
 void Game::update(long ms)
@@ -108,11 +96,6 @@ void Game::update(long ms)
 		car.reset();
 	}
 
-
-	// update any game variables here ...
-	std::cout << "angle:" << car.getRotation() << '\n';
-	//std::cout << "wall collider" << c.toString() << '\n';
-
 	car.update(ms);
 	for (auto& c : boundaries) {
 		Collision col = c.isCollidingWith(car.getCollider());
@@ -124,9 +107,7 @@ void Game::update(long ms)
 }
 
 void Game::draw()
-// This function draws the game world
 {
-	// Clear the screen and draw your game sprites
 	window.beginFrame();
 
 	car.draw();

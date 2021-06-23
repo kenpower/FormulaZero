@@ -6,9 +6,6 @@
 #include <chrono>
 #include "Window.h"
 
-//#include "Globals.h"   // include Global header file
-//#include "Player.h"   // include Player header file
-
 #include "Car.h"
 #include "Collider.h"
 #include "Collision.h"
@@ -16,12 +13,6 @@
 
 class Game
 {
-	// private data members
-
-	// put your game objects here eg player object and 
-	// array of enemy objects etc.
-
-
 	Window window;
 	sf::Texture cars;
 
@@ -30,10 +21,9 @@ class Game
 
 	LineCollider boundaries[4];
 
-
-public:	  // declaration of member functions	
-	Game(); // default constructor
+public:	
 	void	loadContent();
+	void	setUp();
 	void	run();
 	void	update(long);
 	void	draw();

@@ -15,7 +15,7 @@
 #endif 
 #pragma comment(lib,"opengl32.lib") 
 #pragma comment(lib,"glu32.lib") 
-const float SCREEN_WIDTH = 1500;   // the size of the screen in pixels used in the game
+const float SCREEN_WIDTH = 1500;  
 const float SCREEN_HEIGHT = 800;
 
 class Window
@@ -34,15 +34,4 @@ public:
 
 };
 
-/*
-	if (!m_font.loadFromFile("ASSETS/FONTS/BebasNeue.otf"))
-	{
-		std::cout << "error with font file file";
-	}
-
-	// set up the message string
-	m_message.setFont(m_font);  // set the font for the text
-	m_message.setCharacterSize(24); // set the text size
-	m_message.setFillColor(sf::Color::White); // set the text colour
-	m_message.setPosition(10, 10);  // its position on the screen*/
 
